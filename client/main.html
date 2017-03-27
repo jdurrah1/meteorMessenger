@@ -70,6 +70,7 @@
     <div class="col-sm-9 text-left"> 
       <h1>Chat history</h1>
       {{> chatHistory}}
+      {{> newMessage}}
     </div>
     <div class="col-sm-3 sidenav" style="overflow-y: scroll;">
       <h3>Users</h3>
@@ -110,6 +111,12 @@
   <li>
     <div class="well aMessage" ><h5>{{sender}}:</h5>{{text}}</div> 
   </li>
+</template>
+
+<template name="newMessage">
+    <h4>New Message</h4>
+    <input type="text">
+    <button class="sendNewMessageButton">Send</button>
 </template>
 
 

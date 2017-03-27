@@ -120,3 +120,12 @@ Template.chatHistory.helpers({
 
 });
 
+Template.newMessage.events({
+	'click .sendNewMessageButton'(){
+		console.log($(".selected").text())
+
+	}
+
+
+});
+
