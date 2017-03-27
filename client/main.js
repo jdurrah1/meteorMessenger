@@ -8,7 +8,7 @@ import './main.html';
 
  Messeges = new Mongo.Collection('messages');
 
- Session.set("currentChatHistory", [{text: "hello"}]);
+ Session.set("currentChatHistory", []);
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_ONLY',
@@ -107,7 +107,7 @@ Template.user.events({
 		console.log(chatID);
 
 		console.log(Messeges.find({chatID: chatID}).fetch());
-		var newChatHistory = Messeges.find({chatID: chatID}).fetch(); 
+		var newChatHistory = Messeges.find({chatID: chatID}, { sort: { createdAt: -1 } }).fetch(); 
 		Session.set("currentChatHistory", newChatHistory); 
 	},
 
@@ -122,10 +122,37 @@ Template.chatHistory.helpers({
 
 Template.newMessage.events({
 	'click .sendNewMessageButton'(){
-		console.log($(".selected").text())
-
+		console.log($(".selected").text());
+		var usernames = [Meteor.user().username, $(".selected").text()];
+		usernames.sort(); 
+		var chatID = usernames[0]+"_" + usernames[1];
+		console.log(chatID);
+		console.log($("#newMessageValue").val());
+		var text = $("#newMessageValue").val(); 
+		$("#newMessageValue").val(""); 
+		Messeges.insert({
+			text: text, 
+			createdAt: new Date(), 
+			sender: Meteor.user().username,
+			chatID: chatID
+		});
+		var newChatHistory = Messeges.find({chatID: chatID}, { sort: { createdAt: -1 } }).fetch(); 
+		Session.set("currentChatHistory", newChatHistory); 
 	}
 
 
 });
+
+Template.message.events({
+	'click .delete'(){
+		console.log('deleting' + this._id)
+		Messeges.remove(this._id);
+		var usernames = [Meteor.user().username, $(".selected").text()];
+		usernames.sort(); 
+		var chatID = usernames[0]+"_" + usernames[1];
+		var newChatHistory = Messeges.find({chatID: chatID}, { sort: { createdAt: -1 } }).fetch(); 
+		Session.set("currentChatHistory", newChatHistory); 
+	}
+});
+
 

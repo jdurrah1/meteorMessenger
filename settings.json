@@ -1,0 +1,9 @@
+{
+  "galaxy.meteor.com": {
+     "env": {
+       "MONGO_URL": "mongodb://jacob:family@ds143330.mlab.com:43330/meteormessenger"
+     }
+   }
+}
+
+
